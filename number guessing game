@@ -1,0 +1,22 @@
+import random as rd
+start = int(input("Enter the lower limit: "))
+end = int(input("Enter the upper limit: "))
+num=rd.randint(start,end)
+attempt=0
+while True:
+    guess=int(input("Enter Your number : "))
+    attempt+=1
+    if guess> num:
+        if abs((num-guess))<10:
+            print("Too close, make one more try!")
+        else:
+         print("Too large, Try a smaller number! ")
+    elif guess<num:
+        if abs((num-guess))<10:
+            print("Too close, make one more try!")
+        else:
+         print("Too small, Try a larger number! ")
+    elif guess==num:
+       print(f"Congrats, you got it in {attempt} try! ")
+       break
+    
