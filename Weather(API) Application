@@ -1,0 +1,145 @@
+import tkinter
+import requests
+from tkinter import messagebox
+
+API_KEY = "Use Your API Key "
+
+
+def get_weather(city):
+
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+
+    response = requests.get(url)
+
+    if response.status_code != 200:
+
+        messagebox.showerror(
+            "Error",
+            "City not found"
+        )
+
+        return
+
+    data = response.json()
+
+    temp = data["main"]["temp"]
+
+    humidity = data["main"]["humidity"]
+
+    wind_speed = round(
+        data["wind"]["speed"] * 3.6,
+        1
+    )
+
+    condition = data["weather"][0]["main"]
+
+    city_name = data["name"]
+
+    weather_label.config(
+        text=
+        f"City : {city_name}\n\n"
+        f"Temperature : {temp} °C\n\n"
+        f"Humidity : {humidity}%\n\n"
+        f"Wind Speed : {wind_speed} km/h\n\n"
+        f"Condition : {condition}"
+    )
+
+
+def detect_weather():
+
+    location = requests.get(
+        "http://ip-api.com/json/"
+    )
+
+    location_data = location.json()
+
+    if location_data.get("status") != "success":
+
+        messagebox.showerror(
+            "Error",
+            "Unable to detect location"
+        )
+
+        return
+
+    city = location_data["city"]
+
+    get_weather(city)
+
+
+def manual_weather():
+
+    city = city_entry.get().strip()
+
+    if city == "":
+
+        messagebox.showerror(
+            "Error",
+            "Please enter a city name"
+        )
+
+        return
+
+    get_weather(city)
+
+
+app = tkinter.Tk()
+
+app.title("Weather Forecast Application")
+
+app.geometry("500x550")
+
+
+title_label = tkinter.Label(
+    app,
+    text="Weather Forecast Application",
+    font=("Georgia", 18, "bold")
+)
+
+title_label.pack(pady=15)
+
+
+detect_button = tkinter.Button(
+    app,
+    text="Detect My Location",
+    font=("Arial", 11),
+    command=detect_weather
+)
+
+detect_button.pack(pady=10)
+
+
+city_entry = tkinter.Entry(
+    app,
+    width=35,
+    font=("Arial", 12)
+)
+
+city_entry.pack(pady=10)
+
+
+weather_button = tkinter.Button(
+    app,
+    text="Get Weather",
+    font=("Arial", 11),
+    command=manual_weather
+)
+
+weather_button.pack(pady=10)
+
+
+weather_label = tkinter.Label(
+    app,
+    text="",
+    width=35,
+    height=12,
+    relief="solid",
+    borderwidth=2,
+    justify="left",
+    font=("Arial", 11)
+)
+
+weather_label.pack(pady=20)
+
+
+app.mainloop()
