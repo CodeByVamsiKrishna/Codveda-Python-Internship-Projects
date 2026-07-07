@@ -1,0 +1,13 @@
+#make sure to have file named(same name as you entered in input)in folder to run this program sucessfully
+try:
+   your_file=input("Enter file name existing in current folder(without .txt): ")
+   with open(f"{your_file}.txt","r") as file:
+     content=file.read()
+   mylist=content.split(" ")
+   count=0
+   for i in mylist:
+     count+=1
+   print(count)
+except:
+  print(f"No file named {your_file} exists in current folder ")
+
