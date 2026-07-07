@@ -1,0 +1,38 @@
+def process_text(content, shift):
+    new_words = []
+
+    for i in content:
+        asci = ord(i) + shift
+        new_letter = chr(asci)
+        new_words.append(new_letter)
+
+    return "".join(new_words)
+print("1 - encrypt a file ")
+print("2 - Decrypt a file")
+user=input("enter an option from above options(1-2) : ")
+if user=="1":
+   try:
+    name=input("Enter file name(without .txt): ")
+    with open(f"{name}.txt","r") as file:
+     content=file.read()
+     result=process_text(content,+1)
+    encrypt_filename=input("Enter a name for encrypted file(without.txt): ")
+    with open(f"{encrypt_filename}.txt",'w')as file:
+      file.write(result)
+      print("File encrypted sucessfully ")
+   except FileNotFoundError:
+     print(f"Error! File named '{name}' does not exist in the current folder.")
+elif user=="2":
+   try:
+    name=input("Enter file name(without .txt): ")
+    with open(f"{name}.txt","r") as file:
+     content=file.read()
+    new_word=process_text(content,-1)
+    decrypt_filename=input("Enter a name for decrypted file(without.txt): ")
+    with open(f"{decrypt_filename}.txt",'w')as file:
+      file.write(new_word)
+      print("File decrypted sucessfully ")
+   except FileNotFoundError:
+     print(f"Error! File named '{name}' does not exist in the current folder.")
+else:
+   print("Invalid Choice !")
